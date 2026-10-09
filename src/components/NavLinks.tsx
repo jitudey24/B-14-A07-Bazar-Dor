@@ -18,7 +18,7 @@ const NavLinks = async () => {
 
   return (
     <nav className="w-full border-y border-gray-100 bg-white">
-      <div className="mx-auto flex max-w-7xl items-center justify-start px-4 py-3">
+      <div className="mx-auto flex max-w-5xl items-center justify-start px-4 py-3">
         <div className="flex items-center gap-2 overflow-x-auto">
           {data.map(
             (

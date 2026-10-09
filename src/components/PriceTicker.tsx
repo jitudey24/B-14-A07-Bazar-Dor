@@ -69,7 +69,7 @@ export default function PriceTicker() {
   return (
     <div className="overflow-hidden border-b border-gray-200 bg-white py-2">
       {/* Library nijei text clone kore loop banay, tai ekbar-i list dilei hobe */}
-      <MarqueeText className="max-w-7xl mx-auto" duration={25} direction="right">
+      <MarqueeText className="max-w-5xl mx-auto" duration={25} direction="right">
         {products.map((p) => {
           const t = TONE[p.change.dir];
           return (

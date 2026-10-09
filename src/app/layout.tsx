@@ -19,11 +19,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="bn"
       className={`${notoSerifBengali.className} h-full antialiased`}
+
     >
-      <body className="flex min-h-full flex-col bg-[#f3f8f4]">
+      <body suppressHydrationWarning={true} className="flex min-h-full flex-col bg-[#f3f8f4]">
         <Header />
-        <PriceTicker/>
-        <div className="w-full max-w-7xl mx-auto flex-1 px-4 sm:px-6 lg:px-8 pb-24 md:pb-16">{children}</div>
+        <PriceTicker />
+        <main className="w-full max-w-5xl mx-auto flex-1 px-4 sm:px-6 pb-24 md:pb-16">
+          {children}
+        </main>
+
         <Footer />
       </body>
     </html>

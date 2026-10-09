@@ -8,7 +8,7 @@ const MOVER_DIRS: Dir[] = ["up", "down"];
 export default function Home() {
   return (
     <main className="bg-[#f3f8f4] px-4 py-6 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl space-y-8">
+      <div className="mx-auto max-w-5xl space-y-8">
         {/* Hero */}
         <section className="flex flex-col items-center justify-between overflow-hidden rounded-3xl border border-gray-200 bg-white px-6 py-8 shadow-sm sm:px-10 lg:flex-row lg:px-14 lg:py-10">
           {/* Left Content */}
@@ -60,4 +60,5 @@ export default function Home() {
     </main>
   );
 }
+
 
