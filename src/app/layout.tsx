@@ -23,7 +23,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex min-h-full flex-col bg-[#f3f8f4]">
         <Header />
         <PriceTicker/>
-        <div className="w-full flex-1 pb-24 md:pb-16">{children}</div>
+        <div className="w-full max-w-7xl mx-auto flex-1 px-4 sm:px-6 lg:px-8 pb-24 md:pb-16">{children}</div>
         <Footer />
       </body>
     </html>
