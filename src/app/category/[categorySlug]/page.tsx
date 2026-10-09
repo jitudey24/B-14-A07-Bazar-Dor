@@ -1,13 +1,17 @@
 import { Suspense } from "react";
 import { cacheLife } from "next/cache";
+import { notFound } from "next/navigation";
 import baseUrl from "@/services/baseUrl";
 import ProductList, { type Product } from "./ProductList";
+import { CategoryPageSkeleton } from "@/components/Skeleton";
 
 async function getCategoryProducts(slug: string): Promise<Product[]> {
   "use cache";
   cacheLife("hours"); // বারবার API hit না করে 429 এড়াতে
 
-  const res = await fetch(`${baseUrl}/products?category=${slug}`);
+  const res = await fetch(
+    `${baseUrl}/products?category=${encodeURIComponent(slug)}`
+  );
   if (!res.ok) throw new Error(`Failed to fetch products: ${res.status}`);
   return res.json();
 }
@@ -33,6 +37,13 @@ async function CategoryContent({
     products = await getCategoryProducts(categorySlug);
   } catch (err) {
     console.error(err);
+
+    // API 404 dile category nei -> 404 page
+    if (err instanceof Error && err.message.includes(": 404")) {
+      notFound();
+    }
+
+    // onno error (jemon 429, 500) hole error message
     return (
       <Shell>
         <div className="p-10 text-center text-red-600">
@@ -40,6 +51,11 @@ async function CategoryContent({
         </div>
       </Shell>
     );
+  }
+
+  // Khali ba vul category hole 404 page
+  if (!Array.isArray(products) || products.length === 0) {
+    notFound();
   }
 
   const first = products[0];
@@ -73,13 +89,7 @@ export default function CategoryProductsPage({
   params: Promise<{ categorySlug: string }>;
 }) {
   return (
-    <Suspense
-      fallback={
-        <Shell>
-          <div className="p-10 text-center text-gray-500">লোড হচ্ছে...</div>
-        </Shell>
-      }
-    >
+    <Suspense fallback={<CategoryPageSkeleton />}>
       <CategoryContent params={params} />
     </Suspense>
   );

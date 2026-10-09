@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import baseUrl from "@/services/baseUrl";
+import { ProductDetailsSkeleton } from "@/components/Skeleton";
 
 type Market = {
   market: string;
@@ -71,16 +72,7 @@ export default function ProductDetailsPage({
 }) {
   return (
     <Suspense
-      fallback={
-        <main className="min-h-screen bg-gray-50 px-4 py-8">
-          <div className="mx-auto max-w-5xl animate-pulse space-y-5">
-            <div className="h-5 w-40 rounded bg-gray-200" />
-            <div className="h-40 rounded-2xl bg-white" />
-            <div className="h-56 rounded-2xl bg-white" />
-            <div className="h-64 rounded-2xl bg-white" />
-          </div>
-        </main>
-      }
+      fallback={<ProductDetailsSkeleton /> }
     >
       <ProductDetailsContent params={params} />
     </Suspense>
