@@ -131,7 +131,7 @@ const ProfilePage = () => {
       <main className="mx-auto max-w-3xl px-4 py-16 text-center">
         <p className="text-gray-600">প্রোফাইল দেখতে সাইন ইন করুন।</p>
         <Link
-          href="/sign-in?callbackURL=/profile"
+          href="/signin?callbackURL=/profile"
           className="mt-4 inline-block rounded-xl bg-green-600 px-6 py-2.5 font-bold text-white hover:bg-green-700"
         >
           সাইন ইন

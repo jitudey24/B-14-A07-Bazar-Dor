@@ -53,62 +53,67 @@ const Header = ({ navLinks }: { navLinks: ReactNode }) => {
     };
   }, [isDropdownOpen]);
 
- const handleSignOut = async () => {
-  if (isSigningOut) return;
-  setIsSigningOut(true);
+  const handleSignOut = async () => {
+    if (isSigningOut) return;
+    setIsSigningOut(true);
 
-  try {
-    const { error } = await signOut();
+    try {
+      const { error } = await signOut();
 
-    if (error) {
-      toast.error("সাইন আউট করা যায়নি");
-      return;
+      if (error) {
+        toast.error("সাইন আউট করা যায়নি");
+        return;
+      }
+
+      toast.success("সাইন আউট সফল হয়েছে");
+      setIsDropdownOpen(false);
+      router.replace("/");
+      router.refresh();
+    } catch {
+      toast.error("কিছু ভুল হয়েছে, আবার চেষ্টা করুন");
+    } finally {
+      setIsSigningOut(false);
     }
-
-    toast.success("সাইন আউট সফল হয়েছে");
-    setIsDropdownOpen(false);
-    router.replace("/");
-    router.refresh();
-  } catch {
-    toast.error("কিছু ভুল হয়েছে, আবার চেষ্টা করুন");
-  } finally {
-    setIsSigningOut(false);
-  }
-};
+  };
 
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/95 backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-2.5 sm:gap-3 sm:px-6 sm:py-3 lg:px-8">
           {/* Logo */}
-          <Link href="/" className="flex min-w-0 items-center gap-3">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl shadow-sm">
+          <Link
+            href="/"
+            className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3"
+          >
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-green-600 shadow-sm sm:h-11 sm:w-11">
               <Image
                 src="/logo-icon.png"
                 alt="বাজার দর logo"
                 width={44}
                 height={44}
                 priority
-                className="h-full w-full object-cover"
+                className="h-6 w-6 object-contain brightness-0 invert sm:h-7 sm:w-7"
               />
             </div>
 
             <div className="min-w-0">
-              <h1 className="text-xl font-black tracking-tight text-gray-900 sm:text-2xl">
+              <h1 className="truncate text-lg font-black tracking-tight text-gray-900 sm:text-2xl">
                 বাজার দর
               </h1>
-              <DateDisplay />
+              <div className="truncate text-xs sm:text-sm">
+                <DateDisplay />
+              </div>
             </div>
           </Link>
 
           {/* Authentication */}
           <div
             ref={dropdownRef}
-            className="relative flex shrink-0 items-center gap-2 sm:gap-3"
+            className="relative flex shrink-0 items-center gap-1.5 sm:gap-3"
           >
             {isPending ? (
               // session load hocche: sign-in button flash kora ekhane bondho
-              <div className="h-11 w-28 animate-pulse rounded-xl bg-gray-100" />
+              <div className="h-10 w-24 animate-pulse rounded-xl bg-gray-100 sm:h-11 sm:w-28" />
             ) : user ? (
               <>
                 <button
@@ -116,7 +121,7 @@ const Header = ({ navLinks }: { navLinks: ReactNode }) => {
                   onClick={() => setIsDropdownOpen((prev) => !prev)}
                   aria-expanded={isDropdownOpen}
                   aria-haspopup="menu"
-                  className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-2 py-2 shadow-sm hover:bg-gray-50 sm:px-3"
+                  className="flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-1.5 py-1.5 shadow-sm hover:bg-gray-50 sm:gap-2 sm:px-3 sm:py-2"
                 >
                   {user.image ? (
                     <Image
@@ -125,16 +130,15 @@ const Header = ({ navLinks }: { navLinks: ReactNode }) => {
                       width={36}
                       height={36}
                       unoptimized
-                      className="h-9 w-9 rounded-full object-cover"
+                      className="h-8 w-8 rounded-full object-cover sm:h-9 sm:w-9"
                     />
                   ) : (
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-green-100 font-bold text-green-700">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 font-bold text-green-700 sm:h-9 sm:w-9">
                       {displayName.charAt(0).toUpperCase()}
                     </div>
                   )}
 
-                  {/* এখন mobile এও naam dekhabe */}
-                  <span className="max-w-20 truncate font-semibold text-gray-800 sm:max-w-32">
+                  <span className="max-w-16 truncate text-sm font-semibold text-gray-800 sm:max-w-32 sm:text-base">
                     {displayName}
                   </span>
 
@@ -146,7 +150,7 @@ const Header = ({ navLinks }: { navLinks: ReactNode }) => {
                 {isDropdownOpen && (
                   <div
                     role="menu"
-                    className="absolute right-0 top-full z-[60] mt-2 w-60 rounded-xl border border-gray-200 bg-white p-2 shadow-xl"
+                    className="absolute right-0 top-full z-[60] mt-2 w-60 max-w-[calc(100vw-2rem)] rounded-xl border border-gray-200 bg-white p-2 shadow-xl"
                   >
                     <div className="border-b border-gray-100 px-3 py-3">
                       <p className="truncate font-bold text-gray-900">
@@ -181,15 +185,15 @@ const Header = ({ navLinks }: { navLinks: ReactNode }) => {
             ) : (
               <>
                 <Link
-                  href="/sign-in"
-                  className="rounded-xl border border-gray-200 bg-white px-3 py-2.5 font-bold text-gray-700 hover:bg-gray-100 sm:px-6"
+                  href="/signin"
+                  className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm font-bold text-gray-700 hover:bg-gray-100 sm:px-6 sm:py-2.5 sm:text-base"
                 >
                   সাইন ইন
                 </Link>
 
                 <Link
-                  href="/sign-up"
-                  className="rounded-xl bg-green-500 px-3 py-2.5 font-bold text-white hover:bg-green-600 sm:px-6"
+                  href="/signup"
+                  className="rounded-xl bg-green-500 px-3 py-2 text-sm font-bold text-white hover:bg-green-600 sm:px-6 sm:py-2.5 sm:text-base"
                 >
                   সাইন আপ
                 </Link>

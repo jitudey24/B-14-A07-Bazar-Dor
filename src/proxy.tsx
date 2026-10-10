@@ -16,7 +16,7 @@ export async function proxy(request: NextRequest) {
 
   // User logged in na thakle sign-in page e pathao
   if (!session) {
-    const signInUrl = new URL("/sign-in", request.url);
+    const signInUrl = new URL("/signin", request.url);
 
     // User ja dekhte chaichhilo (path + query) mone rakho
     signInUrl.searchParams.set(
@@ -34,5 +34,5 @@ export async function proxy(request: NextRequest) {
 export const config = {
   // Duita details page:
   // /category/[categorySlug]  ar  /product/[slug]
-  matcher: ["/category/:path*", "/product/:path*"],
+  matcher: ["/category/:path*", "/product/:path*", "/profile"],
 };
