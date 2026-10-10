@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -47,8 +46,8 @@ const unitBn = (u: string) =>
     } as Record<string, string>
   )[u] ?? u;
 
-async function getProduct(id: string): Promise<ProductDetail> {
-  const url = `${baseUrl}/products/${encodeURIComponent(id)}`;
+async function getProduct(slug: string): Promise<ProductDetail> {
+  const url = `${baseUrl}/products/${encodeURIComponent(slug)}`;
 
   const res = await fetch(url, {
     cache: "no-store",
@@ -68,12 +67,10 @@ async function getProduct(id: string): Promise<ProductDetail> {
 export default function ProductDetailsPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }) {
   return (
-    <Suspense
-      fallback={<ProductDetailsSkeleton /> }
-    >
+    <Suspense fallback={<ProductDetailsSkeleton />}>
       <ProductDetailsContent params={params} />
     </Suspense>
   );
@@ -82,10 +79,10 @@ export default function ProductDetailsPage({
 async function ProductDetailsContent({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }) {
-  const { id } = await params;
-  const product = await getProduct(id);
+  const { slug } = await params;
+  const product = await getProduct(slug);
 
   const markets = product.markets ?? [];
   const unit = unitBn(product.unit);
