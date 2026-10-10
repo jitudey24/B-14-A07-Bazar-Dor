@@ -3,37 +3,69 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import {
+  Button,
+  FieldError,
+  Form,
+  Input,
+  Label,
+  TextField,
+} from "@heroui/react";
 import { signIn } from "@/lib/auth-client";
-import { Button, FieldError, Form, Input, Label, TextField } from "@heroui/react";
+
+// Details page theke ashle login er por oi page e ferot pathabe
+const getSafeCallbackURL = () => {
+  const url = new URLSearchParams(window.location.search).get("callbackURL");
+  // sudhu nijer site er path allow, na hole onno site e pathano jay
+  return url && url.startsWith("/") && !url.startsWith("//") ? url : "/";
+};
 
 const SignInPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [serverError, setServerError] = useState<string | null>(null);
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setServerError(null);
+    if (loading) return;
 
     const formData = new FormData(e.currentTarget);
-    const email = String(formData.get("email"));
-    const password = String(formData.get("password"));
+    const email = String(formData.get("email") ?? "").trim();
+    const password = String(formData.get("password") ?? "");
 
     setLoading(true);
+
     try {
       const { error } = await signIn.email({ email, password });
 
       if (error) {
-        setServerError(error.message ?? "ইমেইল বা পাসওয়ার্ড ভুল হয়েছে");
+        toast.error(error.message || "ইমেইল বা পাসওয়ার্ড ভুল হয়েছে");
         return;
       }
 
-      // সফল হলে home page এ যাবে, আর Header নতুন session দেখবে
+      toast.success("সাইন ইন সফল হয়েছে!");
       window.location.href = "/";
     } catch {
-      setServerError("কিছু ভুল হয়েছে, আবার চেষ্টা করুন");
+      toast.error("কিছু ভুল হয়েছে, আবার চেষ্টা করুন");
     } finally {
       setLoading(false);
+    }
+  }; // <-- ei closing ta missing chilo
+
+  const handleSocialSignIn = async (provider: "google" | "github") => {
+    const label = provider === "google" ? "Google" : "GitHub";
+
+    try {
+      const { error } = await signIn.social({
+        provider,
+        callbackURL: getSafeCallbackURL(),
+      });
+
+      if (error) {
+        toast.error(error.message || `${label} দিয়ে লগইন ব্যর্থ হয়েছে`);
+      }
+    } catch {
+      toast.error(`${label} দিয়ে লগইন করা যায়নি`);
     }
   };
 
@@ -48,17 +80,15 @@ const SignInPage = () => {
         <Form className="flex flex-col gap-4" onSubmit={handleSignIn}>
           <TextField isRequired name="email" type="email">
             <Label>ইমেইল</Label>
-            <Input />
+            <Input autoComplete="email" />
             <FieldError />
           </TextField>
 
           <TextField isRequired name="password" type="password">
             <Label>পাসওয়ার্ড</Label>
-            <Input />
+            <Input autoComplete="current-password" />
             <FieldError />
           </TextField>
-
-          {serverError && <p className="text-sm text-red-600">{serverError}</p>}
 
           <Button type="submit" isDisabled={loading} className="w-full">
             {loading ? "অপেক্ষা করুন..." : "সাইন ইন করুন"}
@@ -75,14 +105,16 @@ const SignInPage = () => {
           <Button
             variant="secondary"
             className="flex-1"
-            onPress={() => signIn.social({ provider: "google", callbackURL: "/" })}
+            isDisabled={loading}
+            onPress={() => handleSocialSignIn("google")}
           >
             Google দিয়ে চালিয়ে যান
           </Button>
           <Button
             variant="secondary"
             className="flex-1"
-            onPress={() => signIn.social({ provider: "github", callbackURL: "/" })}
+            isDisabled={loading}
+            onPress={() => handleSocialSignIn("github")}
           >
             GitHub দিয়ে চালিয়ে যান
           </Button>

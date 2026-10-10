@@ -97,8 +97,8 @@ export default async function PriceMovers({
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((p) => (
           <Link
-            key={p.id}
-            href={`/products/${p.id}`}
+            key={p.slug}
+            href={`/product/${p.slug}`}
             className="block rounded-2xl border border-gray-100 bg-white p-4 shadow-[0_1px_2px_rgba(0,0,0,0.03)] transition duration-200 hover:-translate-y-0.5 hover:shadow-md"
           >
             <div className="flex items-center gap-3">

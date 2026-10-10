@@ -69,13 +69,13 @@ export default function PriceTicker() {
   return (
     <div className="overflow-hidden border-b border-gray-200 bg-white py-2">
       {/* Library nijei text clone kore loop banay, tai ekbar-i list dilei hobe */}
-      <MarqueeText className="max-w-5xl mx-auto" duration={25} direction="right">
+      <MarqueeText className="max-w-6xl mx-auto" duration={25} direction="right">
         {products.map((p) => {
           const t = TONE[p.change.dir];
           return (
             <Link
-              key={p.id}
-              href={`/products/${p.id}`}
+              key={p.slug}
+              href={`/product/${p.slug}`}
               className="inline-flex items-center gap-2 whitespace-nowrap px-5 text-sm hover:bg-gray-50"
             >
               <span className="text-lg">{p.image}</span>

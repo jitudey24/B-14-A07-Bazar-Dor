@@ -38,7 +38,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           }
         />
         <PriceTicker />
-        <main className="w-full max-w-5xl mx-auto flex-1 px-4 sm:px-6 pb-24 md:pb-16">
+        <main className="w-full max-w-6xl mx-auto flex-1 px-4 sm:px-6 pb-24 md:pb-16">
           {children}
         </main>
         <Footer />

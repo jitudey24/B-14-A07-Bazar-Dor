@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { signOut, useSession } from "@/lib/auth-client";
 
 import DateDisplay from "./DateDisplay";
+import toast from "react-hot-toast";
 
 // navLinks = layout.tsx (server) theke ashbe, tai ekhane import korte hobe na
 const Header = ({ navLinks }: { navLinks: ReactNode }) => {
@@ -52,33 +53,33 @@ const Header = ({ navLinks }: { navLinks: ReactNode }) => {
     };
   }, [isDropdownOpen]);
 
-  const handleSignOut = async () => {
-    if (isSigningOut) return;
+ const handleSignOut = async () => {
+  if (isSigningOut) return;
+  setIsSigningOut(true);
 
-    setIsSigningOut(true);
+  try {
+    const { error } = await signOut();
 
-    try {
-      const { error } = await signOut();
-
-      if (error) {
-        console.error("Sign out failed:", error);
-        return;
-      }
-
-      setIsDropdownOpen(false);
-      router.replace("/");
-      router.refresh();
-    } catch (error) {
-      console.error("Sign out error:", error);
-    } finally {
-      setIsSigningOut(false);
+    if (error) {
+      toast.error("সাইন আউট করা যায়নি");
+      return;
     }
-  };
+
+    toast.success("সাইন আউট সফল হয়েছে");
+    setIsDropdownOpen(false);
+    router.replace("/");
+    router.refresh();
+  } catch {
+    toast.error("কিছু ভুল হয়েছে, আবার চেষ্টা করুন");
+  } finally {
+    setIsSigningOut(false);
+  }
+};
 
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/95 backdrop-blur-md">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
           {/* Logo */}
           <Link href="/" className="flex min-w-0 items-center gap-3">
             <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl shadow-sm">
@@ -162,7 +163,7 @@ const Header = ({ navLinks }: { navLinks: ReactNode }) => {
                       onClick={() => setIsDropdownOpen(false)}
                       className="mt-2 block rounded-lg px-3 py-2.5 font-medium text-gray-700 hover:bg-green-50 hover:text-green-700"
                     >
-                      👤 Profile
+                      👤 প্রোফাইল
                     </Link>
 
                     <button
@@ -172,7 +173,7 @@ const Header = ({ navLinks }: { navLinks: ReactNode }) => {
                       disabled={isSigningOut}
                       className="mt-1 w-full rounded-lg px-3 py-2.5 text-left font-medium text-red-600 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
                     >
-                      {isSigningOut ? "Signing out..." : "↪ Sign Out"}
+                      {isSigningOut ? "সাইন আউট হচ্ছে..." : "↩ সাইন আউট"}
                     </button>
                   </div>
                 )}

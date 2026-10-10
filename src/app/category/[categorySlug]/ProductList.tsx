@@ -135,8 +135,8 @@ export default function ProductList({
 
           {sorted.map((p) => (
             <Link
-              key={p.id}
-              href={`/products/${p.id}`}
+              key={p.slug}
+              href={`/product/${p.slug}`}
               className="block"
             >
               <div className="rounded-2xl border border-gray-100 bg-white p-4 transition hover:-translate-y-0.5 hover:shadow-md">

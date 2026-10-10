@@ -94,26 +94,27 @@ const ProfilePage = () => {
 
   const user = session?.user;
 
-  const handleSignOut = async () => {
-    if (isSigningOut) return;
-    setIsSigningOut(true);
+ const handleSignOut = async () => {
+  if (isSigningOut) return;
+  setIsSigningOut(true);
 
-    try {
-      const { error } = await signOut();
+  try {
+    const { error } = await signOut();
 
-      if (error) {
-        toast.error("সাইন আউট করা যায়নি");
-        return;
-      }
-
-      router.replace("/");
-      router.refresh();
-    } catch {
-      toast.error("কিছু ভুল হয়েছে, আবার চেষ্টা করুন");
-    } finally {
-      setIsSigningOut(false);
+    if (error) {
+      toast.error("সাইন আউট করা যায়নি");
+      return;
     }
-  };
+
+    toast.success("সাইন আউট সফল হয়েছে");
+    router.replace("/");
+    router.refresh();
+  } catch {
+    toast.error("কিছু ভুল হয়েছে, আবার চেষ্টা করুন");
+  } finally {
+    setIsSigningOut(false);
+  }
+};
 
   if (isPending) {
     return (

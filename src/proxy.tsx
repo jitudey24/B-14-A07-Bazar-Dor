@@ -34,5 +34,5 @@ export async function proxy(request: NextRequest) {
 export const config = {
   // Duita details page:
   // /category/[categorySlug]  ar  /product/[slug]
-  matcher: ["/category/:path*", "/products/:path*"],
+  matcher: ["/category/:path*", "/product/:path*"],
 };
