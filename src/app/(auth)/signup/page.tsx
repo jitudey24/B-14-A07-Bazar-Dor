@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
+import {  useRouter } from "next/navigation";
 import { signIn, signUp } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 import {
@@ -99,6 +99,7 @@ const SignUpPage = () => {
       });
 
       if (error) {
+        console.log("error==========", error);
         toast.error(error.message || "সাইন আপ করা যায়নি");
         return;
       }
