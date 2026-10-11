@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 const Header = ({ navLinks }: { navLinks: ReactNode }) => {
   const router = useRouter();
   const { data: session, isPending } = useSession();
-
+  console.log('session===============',session, isPending);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
 
