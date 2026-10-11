@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { signIn, signUp } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 import {
@@ -104,7 +104,6 @@ const SignUpPage = () => {
       }
 
       toast.success("সাইন আপ সফল হয়েছে!");
-
       window.location.href = "/";
     } catch {
       toast.error("কিছু ভুল হয়েছে, আবার চেষ্টা করুন");

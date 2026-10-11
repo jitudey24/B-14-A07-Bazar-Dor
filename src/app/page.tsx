@@ -1,5 +1,5 @@
 import Image from "next/image";
-import DownProducts, { type Dir } from "@/components/PriceMovers";
+import PriceMovers, { type Dir } from "@/components/PriceMovers";
 import AllProducts from "@/components/AllProducts";
 import DateDisplay from "@/components/DateDisplay";
 
@@ -51,7 +51,7 @@ export default function Home() {
 
         {/* Price Movers */}
         {MOVER_DIRS.map((dir) => (
-          <DownProducts key={dir} dir={dir} />
+          <PriceMovers key={dir} dir={dir} />
         ))}
 
         {/* All Products */}
